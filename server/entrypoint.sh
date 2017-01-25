@@ -11,7 +11,7 @@ if [ -z "$PASSWORD" ]; then
   echo >&2 'Please set a PASSWORD variable (ie.: -e PASSWORD=hackme).'
   exit 1
 fi
-USER=pod
+USER=koapp
 
 echo "Creating user ${USER}"
 adduser -D ${USER} && echo "${USER}:${PASSWORD}" | chpasswd
