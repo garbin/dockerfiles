@@ -8,14 +8,16 @@
 #
 # Checks for PASSWORD variable
 if [ -z "$PASSWORD" ]; then
-  echo >&2 'Please set a PASSWORD variable (ie.: -e PASSWORD=hackme).'
-  exit 1
+  PASSWORD=hackme
+  # echo >&2 'Please set a PASSWORD variable (ie.: -e PASSWORD=hackme).'
+  # exit 1
 fi
-USER=koapp
+USER=node
 
-echo "Creating user ${USER}"
-adduser -D ${USER} && echo "${USER}:${PASSWORD}" | chpasswd
-echo "Fixing permissions for user ${USER}"
-chown -R ${USER}:${USER} /home/${USER}
+# echo "Creating user ${USER}"
+# adduser -D ${USER} &&
+echo "${USER}:${PASSWORD}" | chpasswd
+# echo "Fixing permissions for user ${USER}"
+# chown -R ${USER}:${USER} /home/${USER}
 
 exec "$@"
