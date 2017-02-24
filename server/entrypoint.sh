@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # # Checks for USER variable
 # if [ -z "$USER" ]; then
@@ -9,15 +9,17 @@
 # Checks for PASSWORD variable
 if [ -z "$PASSWORD" ]; then
   PASSWORD=hackme
-  # echo >&2 'Please set a PASSWORD variable (ie.: -e PASSWORD=hackme).'
-  # exit 1
 fi
+
 USER=node
+if [ -n "$PM2_APPS" ]; then
+  apps=(${PM2_APPS//;/ })
+  for i in "${!apps[@]}"
+  do
+    app=(${apps[i]//:/ })
+    ln -s ${app[1]} /etc/pm2/apps/${app[0]}
+  done
+fi
 
-# echo "Creating user ${USER}"
-# adduser -D ${USER} &&
 echo "${USER}:${PASSWORD}" | chpasswd
-# echo "Fixing permissions for user ${USER}"
-# chown -R ${USER}:${USER} /home/${USER}
-
 exec "$@"

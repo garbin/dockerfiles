@@ -8,17 +8,17 @@ RUN apt-get update
 RUN apt-get install -y nodejs php php-fpm php-pgsql php-mysql php-gd php-json php-mcrypt
 RUN npm i -g pm2
 RUN useradd -d /srv/node -m -s /bin/zsh -u 1000 node
+USER node
+RUN /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+RUN mkdir ~/apps
+USER root
 RUN mkdir -p /var/run/sshd /var/log/supervisor /run/php
 COPY supervisor/supervisord.conf /etc/supervisor/conf.d/koapp.conf
 COPY nginx/default.conf /etc/nginx/sites-availables/default
 COPY nginx/index.php /var/www
 COPY entrypoint.sh /usr/bin/
 COPY pm2 /etc/pm2
-USER node
-RUN /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
-RUN mkdir ~/apps
 WORKDIR /srv/node/apps
-USER root
 VOLUME ["/etc/nginx", "/var/www", "/srv/node", "/etc/pm2", "/etc/supervisor"]
 EXPOSE 22 80 443 5000 19999
 ENTRYPOINT ["/usr/bin/entrypoint.sh"]
